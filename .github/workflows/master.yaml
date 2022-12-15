@@ -12,10 +12,6 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v3
       - run: cd "02 Starting Project"
-      - name: download node
-        uses: actions/setup-node@v3
-        with: 
-          node-version: 18
       - run: npm clean
       - name: install dependencies
         run: npm ci
