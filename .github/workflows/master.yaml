@@ -1,5 +1,7 @@
 name: first-workflow
 on: 
+  push: 
+    branches: ['master']
   workflow_dispatch:
 jobs:
   first-job:
