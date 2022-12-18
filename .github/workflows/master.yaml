@@ -16,8 +16,8 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
-    outputs: 
-      name: shell-file ${{ steps.publish.outputs.scritp-file }}
+    outputs:  
+       shell-file: ${{ steps.publish.outputs.scritp-file }}
     steps:
       - name: welcome note
         run: echo "${{ toJSON(github.event) }}"
