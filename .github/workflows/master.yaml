@@ -1,7 +1,7 @@
 name: first-workflow
 on: [push, workflow_dispatch]
 jobs:
-  first-job:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: welcome note
@@ -14,7 +14,7 @@ jobs:
       - name: run tests
         run: npm test
   build:
-    needs: first-job
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: welcome note
@@ -27,7 +27,19 @@ jobs:
       - name: run tests
         run: npm test
       - name: npm build
-        run: npm run build
-        
+        run: npm run build    
+      - name: upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: |
+            dist
+            package.json
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy
+        run: echo "deploying..."
         
          
