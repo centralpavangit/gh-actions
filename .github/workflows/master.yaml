@@ -53,7 +53,7 @@ jobs:
       - name: output contents
         run: ls
       - name: read output
-        run: echo '${{ needs.build.outputs.script-file }}'
+        run: echo '${{ needs.build.outputs.shell-file }}'
           
       - name: deploy
         run: echo "deploying..."
