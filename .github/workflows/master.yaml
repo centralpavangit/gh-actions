@@ -38,7 +38,7 @@ jobs:
         with:
          path: |
           dist-files
-          package.json
+        
   deploy:
     needs: build
     runs-on: ubuntu-latest
