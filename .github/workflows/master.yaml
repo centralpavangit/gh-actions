@@ -16,6 +16,8 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    outputs: 
+      name: shell-file ${{ steps.publish.outputs.scritp-file }}
     steps:
       - name: welcome note
         run: echo "${{ toJSON(github.event) }}"
@@ -28,14 +30,15 @@ jobs:
         run: npm test
       - name: npm build
         run: npm run build    
+      - name: publish java file
+        id: publish
+        run: find dist/assets/*js -type f execdir echo '::set-output name=script-file{}::' ';'
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: dist-files
-          path: dist
-        # path: |
-        #  dist
-        #   package.json
+         path: |
+          dist-files
+          package.json
   deploy:
     needs: build
     runs-on: ubuntu-latest
