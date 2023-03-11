@@ -5,57 +5,57 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: welcome note
-        run: echo "${{ toJSON(github.event) }}"
+        run: echo "${{ toJSON(github.event.head_commit.message) }}"
       - name: checkout code
         uses: actions/checkout@v3
 
-      - name: install dependencies
-        run: npm ci
-      - name: run tests
-        run: npm test
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    outputs:  
-       shell-file: ${{ steps.publish.outputs.scritp-file }}
-    steps:
-      - name: welcome note
-        run: echo "${{ toJSON(github.event) }}"
-      - name: checkout code
-        uses: actions/checkout@v3
+#       - name: install dependencies
+#         run: npm ci
+#       - name: run tests
+#         run: npm test
+#   build:
+#     needs: test
+#     runs-on: ubuntu-latest
+#     outputs:  
+#        shell-file: ${{ steps.publish.outputs.scritp-file }}
+#     steps:
+#       - name: welcome note
+#         run: echo "${{ toJSON(github.event) }}"
+#       - name: checkout code
+#         uses: actions/checkout@v3
 
-      - name: install dependencies
-        run: npm ci
-      - name: run tests
-        run: npm test
-      - name: npm build
-        run: npm run build    
-      - name: publish java file
-        id: publish
-        run: find dist/assets/*js -type f -execdir echo '::set-output name=script-file{}::' ';'
-      - name: upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-         name: dist-files
-         path: |
-          dist
+#       - name: install dependencies
+#         run: npm ci
+#       - name: run tests
+#         run: npm test
+#       - name: npm build
+#         run: npm run build    
+#       - name: publish java file
+#         id: publish
+#         run: find dist/assets/*js -type f -execdir echo '::set-output name=script-file{}::' ';'
+#       - name: upload artifacts
+#         uses: actions/upload-artifact@v3
+#         with:
+#          name: dist-files
+#          path: |
+#           dist
         
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: list files
-        run: ls
-      - name: get build artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: dist-files
-      - name: output contents
-        run: ls
-      - name: read output
-        run: echo '${{ needs.build.outputs.shell-file }}'
+#   deploy:
+#     needs: build
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: list files
+#         run: ls
+#       - name: get build artifact
+#         uses: actions/download-artifact@v3
+#         with:
+#           name: dist-files
+#       - name: output contents
+#         run: ls
+#       - name: read output
+#         run: echo '${{ needs.build.outputs.shell-file }}'
           
-      - name: deploy
-        run: echo "deploying..."
+#       - name: deploy
+#         run: echo "deploying..."
         
          
