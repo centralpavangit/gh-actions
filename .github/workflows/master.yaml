@@ -44,6 +44,11 @@ jobs:
           else
            echo "Commit message does not contain [major], [minor], or [patch]"
           fi
+          git config --global user.name "pavan"
+          git config --global user.email "mr.pavad@gmail.com"
+          git add .
+          git commit -m "version changed to $new_version"
+          git push 
 
 
 #       - name: install dependencies
