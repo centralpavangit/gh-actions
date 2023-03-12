@@ -8,6 +8,43 @@ jobs:
         run: echo "${{ toJSON(github.event.head_commit.message) }}"
       - name: checkout code
         uses: actions/checkout@v3
+      - name: Check commit message for [major], [minor], or [patch]
+        run: |
+          commit_message=$(echo "${{ toJSON(github.event.head_commit.message) }}" | tr -d '\n')
+          if echo "$commit_message" | grep -q '\[major\]'; then
+           echo "Commit message contains [major]"
+           sed -i -r 's/^([0-9]+)\.([0-9]+)\.([0-9]+)$/\1.0.0/g' version.txt
+           version=$(cat version.txt)
+           IFS='.' read -r -a version_array <<< "$version"
+           major=${version_array[0]}
+           new_major=$((major+1))
+           new_version="${new_major}.0.0"
+           echo "$new_version" > version.txt
+           echo "Version number updated to $new_version"
+          elif echo "$commit_message" | grep -q '\[minor\]'; then
+           echo "Commit message contains [minor]"
+           sed -i -r 's/^([0-9]+)\.([0-9]+)\.([0-9]+)$/\1.\2.0/g' version.txt
+           version=$(cat version.txt)
+           IFS='.' read -r -a version_array <<< "$version"
+           minor=${version_array[1]}
+           new_minor=$((minor+1))
+           new_version="${version_array[0]}.${new_minor}.0"
+           echo "$new_version" > version.txt
+           echo "Version number updated to $new_version"
+          elif echo "$commit_message" | grep -q '\[patch\]'; then
+          echo "Commit message contains [patch]"
+          sed -i -r 's/^([0-9]+)\.([0-9]+)\.([0-9]+)$/\1.\2.0/g' version.txt
+          version=$(cat version.txt)
+          IFS='.' read -r -a version_array <<< "$version"
+          patch=${version_array[2]}
+          new_patch=$((patch+1))
+          new_version="${version_array[0]}.${version_array[1]}.${new_patch}"
+          echo "$new_version" > version.txt
+          echo "Version number updated to $new_version"
+          else
+           echo "Commit message does not contain [major], [minor], or [patch]"
+          fi
+
 
 #       - name: install dependencies
 #         run: npm ci
