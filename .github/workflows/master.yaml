@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: welcome note
-        run: echo "${{ toJSON(github.event) }}"
+        run: echo "${{ toJSON(github) }}"
 #       - name: checkout code
 #         uses: actions/checkout@v3
 #       - name: Check commit message for [major], [minor], or [patch]
